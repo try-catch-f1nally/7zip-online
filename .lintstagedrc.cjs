@@ -1,4 +1,4 @@
 module.exports = {
-  './src/**/*.ts': 'eslint --ignore-pathModule .gitignore',
-  '*': ['editorconfig-checker', 'prettier --ignore-pathModule .gitignore --ignore-unknown --check']
+  './src/**/*.ts': 'eslint --ignore-path .gitignore',
+  '*': ['editorconfig-checker', 'prettier --ignore-path .gitignore --ignore-unknown --check']
 };
