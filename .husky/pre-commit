@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+exec >/dev/tty 2>&1 # https://stackoverflow.com/questions/72579519/multiple-run-lint-staged-when-use-with-husky
+
+npx lint-staged
