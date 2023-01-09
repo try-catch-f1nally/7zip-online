@@ -1,7 +1,6 @@
 import {ValidationError} from '../../../exceptions/api.exception';
 
 export default interface UserValidator {
-  validateChangeName(userId: any, firstName: any, lastName: any): ValidationError[];
-  validateChangeEmail(userId: any, email: any): ValidationError[];
-  validateChangePassword(userId: any, oldPassword: any, newPassword: any): ValidationError[];
+  validateChangeEmail(userId: unknown, email: unknown): ValidationError[];
+  validateChangePassword(userId: unknown, oldPassword: unknown, newPassword: unknown): ValidationError[];
 }

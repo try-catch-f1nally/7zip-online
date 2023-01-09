@@ -1,17 +1,11 @@
 import UserValidator from './interfaces/user.validator.interface';
 
 export default class UserValidatorImpl implements UserValidator {
-  // TODO
-
-  validateChangeName(userId: any, firstName: any, lastName: any) {
+  validateChangeEmail(userId: unknown, email: unknown) {
     return [];
   }
 
-  validateChangeEmail(userId: any, email: any) {
-    return [];
-  }
-
-  validateChangePassword(userId: any, oldPassword: any, newPassword: any) {
+  validateChangePassword(userId: unknown, oldPassword: unknown, newPassword: unknown) {
     return [];
   }
 }

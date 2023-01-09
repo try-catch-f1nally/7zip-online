@@ -31,13 +31,13 @@ export default class AuthController implements Controller {
 
   private async _register(req: Request, res: Response, next: NextFunction) {
     try {
-      const errors = this._authValidator.validateRegister(req.body);
+      const {email, password} = req.body;
+      const errors = this._authValidator.validateRegister(email, password);
       if (errors.length) {
         throw new BadRequestError('Incorrect registration data', errors);
       }
-      const {email, password, firstName, lastName} = req.body;
-      const userData = await this._authService.register({firstName, lastName, email, password});
-      this._setCookie(res, userData.refreshToken);
+      const userData = await this._authService.register(email, password);
+      this._setTokenInCookie(res, userData.refreshToken);
 
       return res.status(201).json(userData);
     } catch (error) {
@@ -47,13 +47,13 @@ export default class AuthController implements Controller {
 
   private async _login(req: Request, res: Response, next: NextFunction) {
     try {
-      const errors = this._authValidator.validateLogin(req.body);
+      const {email, password} = req.body;
+      const errors = this._authValidator.validateLogin(email, password);
       if (errors.length) {
         throw new BadRequestError('Incorrect login data', errors);
       }
-      const {email, password} = req.body;
-      const userData = await this._authService.login({email, password});
-      this._setCookie(res, userData.refreshToken);
+      const userData = await this._authService.login(email, password);
+      this._setTokenInCookie(res, userData.refreshToken);
       return res.json(userData);
     } catch (error) {
       next(error);
@@ -66,7 +66,7 @@ export default class AuthController implements Controller {
       if (!refreshToken) {
         throw new UnauthorizedError('Refresh token is missing');
       }
-      res.clearCookie('refreshToken');
+      this._removeTokenFromCookie(res);
       await this._authService.logout(refreshToken);
       res.sendStatus(200);
     } catch (error) {
@@ -80,20 +80,24 @@ export default class AuthController implements Controller {
       if (!refreshToken) {
         throw new UnauthorizedError('Refresh token is missing');
       }
-      res.clearCookie('refreshToken');
+      this._removeTokenFromCookie(res);
       const userData = await this._authService.refresh(refreshToken);
-      this._setCookie(res, userData.refreshToken);
+      this._setTokenInCookie(res, userData.refreshToken);
       res.json(userData);
     } catch (error) {
       next(error);
     }
   }
 
-  private _setCookie(res: Response, token: string) {
+  private _setTokenInCookie(res: Response, token: string) {
     res.cookie('refreshToken', token, {
       maxAge: this._config.auth.refreshTokenTtlInSeconds * 1000,
       httpOnly: true,
       path: `${this._config.baseUrl}/auth`
     });
+  }
+
+  private _removeTokenFromCookie(res: Response) {
+    res.clearCookie('refreshToken', {path: `${this._config.baseUrl}/auth`});
   }
 }

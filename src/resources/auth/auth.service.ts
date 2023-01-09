@@ -1,10 +1,9 @@
-import * as crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import {BadRequestError, UnauthorizedError, WrongUserIdInTokenError} from '../../exceptions/api.exception';
 import AuthService from './interfaces/auth.service.interface';
 import Config from '../../utils/@types/interfaces/config.interface';
 import UserModel from '../user/interfaces/user.model.interface';
-import {TokenPayload, RegistrationData, LoginData} from './interfaces/auth.types';
+import {TokenPayload} from './interfaces/auth.types';
 
 export default class AuthServiceImpl implements AuthService {
   private _config: Config;
@@ -15,12 +14,12 @@ export default class AuthServiceImpl implements AuthService {
     this._userModel = userModel;
   }
 
-  async register({email, password, ...registrationData}: RegistrationData) {
+  async register(email: string, password: string) {
     const candidate = await this._userModel.findOne({email});
     if (candidate) {
       throw new BadRequestError('User with such email already exists');
     }
-    const user = await this._userModel.create({...registrationData, email, password});
+    const user = await this._userModel.create({email, password});
     const payload = {user: {id: user.id}};
     const tokens = this._generateTokens(payload);
     user.token = tokens.refreshToken;
@@ -29,7 +28,7 @@ export default class AuthServiceImpl implements AuthService {
     return {...tokens, userId: user.id};
   }
 
-  async login({email, password}: LoginData) {
+  async login(email: string, password: string) {
     const user = await this._userModel.findOne({email});
     if (!user?.comparePassword(password)) {
       throw new BadRequestError('Wrong email or password');

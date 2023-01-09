@@ -1,5 +1,5 @@
 import UserService from './interfaces/user.service.interface';
-import {BadRequestError, WrongUserIdInTokenError} from '../../exceptions/api.exception';
+import {BadRequestError} from '../../exceptions/api.exception';
 import Config from '../../utils/@types/interfaces/config.interface';
 import UserModel from './interfaces/user.model.interface';
 
@@ -12,13 +12,6 @@ export default class UserServiceImpl implements UserService {
     this._userModel = userModel;
   }
 
-  async changeName(userId: string, firstName: string, lastName: string) {
-    const {modifiedCount} = await this._userModel.updateOne({_id: userId}, {$set: {firstName, lastName}});
-    if (!modifiedCount) {
-      throw new WrongUserIdInTokenError();
-    }
-  }
-
   async changeEmail(userId: string, email: string) {
     const existingUserWithEmail = await this._userModel.findOne({email});
     if (existingUserWithEmail) {
@@ -26,14 +19,14 @@ export default class UserServiceImpl implements UserService {
     }
     const {modifiedCount} = await this._userModel.updateOne({_id: userId}, {$set: {email}});
     if (!modifiedCount) {
-      throw new WrongUserIdInTokenError();
+      throw new BadRequestError('User with such userId not found');
     }
   }
 
   async changePassword(userId: string, oldPassword: string, newPassword: string) {
     const user = await this._userModel.findById(userId);
     if (!user) {
-      throw new WrongUserIdInTokenError();
+      throw new BadRequestError('User with such userId not found');
     }
     if (!user.comparePassword(oldPassword)) {
       throw new BadRequestError('Incorrect old password');

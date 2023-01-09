@@ -1,11 +1,9 @@
 import crypto from 'crypto';
 import {Schema, model} from 'mongoose';
-import UserModel, {User, UserDocument} from './interfaces/user.model.interface';
+import UserModel, {UserDocument} from './interfaces/user.model.interface';
 
 const UserSchema = new Schema<UserDocument, UserModel>(
   {
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
     email: {type: String, unique: true, required: true, lowercase: true},
     password: {type: String, required: true},
     salt: {type: String, required: true, default: crypto.randomBytes(16).toString('hex')},

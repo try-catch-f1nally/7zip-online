@@ -25,24 +25,8 @@ export default class UserController implements Controller {
   }
 
   private _initialiseRouter() {
-    this._router.patch('/users/:id/name', this._authMiddleware, this._changeName.bind(this));
     this._router.patch('/users/:id/email', this._authMiddleware, this._changeEmail.bind(this));
     this._router.patch('/users/:id/password', this._authMiddleware, this._changePassword.bind(this));
-  }
-
-  private async _changeName(req: Request, res: Response, next: NextFunction) {
-    try {
-      const {id: userId} = req.params;
-      const {firstName, lastName} = req.body;
-      const errors = this._userValidator.validateChangeName(userId, firstName, lastName);
-      if (errors.length) {
-        throw new BadRequestError('Incorrect data for changing name', errors);
-      }
-      await this._userService.changeName(userId, firstName, lastName);
-      res.sendStatus(200);
-    } catch (error) {
-      next(error);
-    }
   }
 
   private async _changeEmail(req: Request, res: Response, next: NextFunction) {
