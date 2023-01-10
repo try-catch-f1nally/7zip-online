@@ -14,6 +14,10 @@ export default interface Config {
     accessTokenTtlInSeconds: number;
     refreshTokenTtlInSeconds: number;
   };
+  archive: {
+    fileSizeLimit: number;
+    uploadDirPath: string;
+  };
   internalErrorHttpMessage: string;
   notFoundErrorHttpMessage: string;
   log4js: log4js.Configuration;

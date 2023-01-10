@@ -4,4 +4,8 @@ export type TokenPayload = {
   };
 };
 
-export type UserData = {userId: string; accessToken: string; refreshToken: string};
+export type UserData = {
+  userId: string;
+  accessToken: string;
+  refreshToken: string;
+};

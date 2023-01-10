@@ -6,7 +6,6 @@ import Database from './utils/@types/interfaces/database.interface';
 
 export default class Application {
   private readonly _app: express.Application = express();
-  private _server: http.Server | null = null;
   private readonly _config: Config;
   private readonly _logger: Logger;
   private readonly _database: Database;
@@ -14,6 +13,7 @@ export default class Application {
   private readonly _routers: Array<express.Router>;
   private readonly _defaultHandler: express.RequestHandler;
   private readonly _errorHandler: express.ErrorRequestHandler;
+  private _server: http.Server | null = null;
 
   constructor(
     config: Config,

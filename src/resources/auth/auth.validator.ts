@@ -21,8 +21,7 @@ export default class AuthValidatorImpl implements AuthValidator {
           format: 'password'
         }
       },
-      required: ['email', 'password'],
-      additionalProperties: false
+      required: ['email', 'password']
     };
     return ajv.compile(schema);
   }
@@ -35,8 +34,7 @@ export default class AuthValidatorImpl implements AuthValidator {
         email: {type: 'string'},
         password: {type: 'string'}
       },
-      required: ['email', 'password'],
-      additionalProperties: false
+      required: ['email', 'password']
     };
     return ajv.compile(schema);
   }

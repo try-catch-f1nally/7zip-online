@@ -22,7 +22,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'import', 'sonarjs', 'prettier'],
   rules: {
-    'no-empty': ['warn'],
+    'no-empty': ['off'],
     'sonarjs/no-ignored-return': ['off'],
     '@typescript-eslint/no-misused-promises': ['error', {checksVoidReturn: false}],
     '@typescript-eslint/no-unsafe-assignment': ['off'],
