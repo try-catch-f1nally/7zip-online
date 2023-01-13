@@ -25,7 +25,17 @@ const config: Config = {
     }
   },
   morganFormat: 'dev',
-  urlencodedMiddlewareOptions: {extended: false}
+  urlencodedMiddlewareOptions: {
+    extended: false,
+    limit: '2gb'
+  },
+  jsonMiddlewareOptions: {
+    limit: '2gb'
+  },
+  corsOptions: {
+    credentials: true,
+    origin: 'http://localhost:8080'
+  }
 };
 
 export default config;

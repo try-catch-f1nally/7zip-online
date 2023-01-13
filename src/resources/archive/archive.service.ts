@@ -120,14 +120,20 @@ export default class ArchiveServiceImpl implements ArchiveService {
     if (status === 'success') {
       return {status: 'success'};
     }
-    return {status: 'error', message: errorMessage};
+    return {status: 'error', errorMessage};
   }
 
   downloadArchive(userId: string) {
     const userArchivingInfo = this._usersArchivingInfoMap[userId];
-    const callback = async () => {
-      await fs.rm(this.getUserDir(userId), {recursive: true, force: true});
-      delete this._usersArchivingInfoMap[userId];
+    const callback = () => {
+      setTimeout(async () => {
+        try {
+          await fs.rm(this.getUserDir(userId), {recursive: true, force: true});
+          delete this._usersArchivingInfoMap[userId];
+        } catch (error) {
+          this._logger.error(`Failed to remove files of user with id ${userId}`);
+        }
+      }, 20 * 60 * 1000);
     };
     if (userArchivingInfo?.status === 'process') {
       throw new BadRequestError('Archive is not ready yet');

@@ -1,3 +1,4 @@
+import path from 'path';
 import multer, {MulterError} from 'multer';
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import Controller from '../../utils/@types/interfaces/controller.interface';
@@ -67,7 +68,7 @@ export default class ArchiveController implements Controller {
         },
         filename: (req, file, callback) => callback(null, file.originalname)
       })
-    }).fields([{name: 'files'}])(req, res, next);
+    }).fields([{name: 'files[]'}])(req, res, next);
   }
 
   private _uploadErrorHandler(err: unknown, req: Request, res: Response, next: NextFunction) {
@@ -116,7 +117,8 @@ export default class ArchiveController implements Controller {
         throw new Error('User id is missing on downloading archive');
       }
       const {archive, callback} = this._archiveService.downloadArchive(req.user.id);
-      res.download(archive, callback);
+      const filename = path.basename(archive);
+      res.download(archive, filename, callback);
     } catch (error) {
       next(error);
     }

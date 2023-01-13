@@ -14,7 +14,7 @@ type StatusProcess = {
 
 type StatusError = {
   status: 'error';
-  message: string;
+  errorMessage: string;
 };
 
 type StatusSuccess = {
