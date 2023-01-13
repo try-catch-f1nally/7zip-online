@@ -131,11 +131,9 @@ export default class AuthServiceImpl implements AuthService {
 
   _generateTokens(payload: object | string | Buffer) {
     const {accessSecret, refreshSecret, accessTokenTtlInSeconds, refreshTokenTtlInSeconds} = this._config.auth;
-    const accessKey = process.env.JWT_ACCESS_SECRET || accessSecret;
-    const refreshKey = process.env.JWT_REFRESH_SECRET || refreshSecret;
     return {
-      accessToken: jwt.sign(payload, accessKey, {expiresIn: accessTokenTtlInSeconds}),
-      refreshToken: jwt.sign(payload, refreshKey, {expiresIn: refreshTokenTtlInSeconds})
+      accessToken: jwt.sign(payload, accessSecret, {expiresIn: accessTokenTtlInSeconds}),
+      refreshToken: jwt.sign(payload, refreshSecret, {expiresIn: refreshTokenTtlInSeconds})
     };
   }
 }

@@ -69,7 +69,7 @@ export default class Application {
   }
 
   private _startListening() {
-    const port = Number(process.env.PORT) || this._config.port;
+    const port = this._config.port;
     const cb = () => this._logger.info(`Application started listening on port ${port}`);
     this._server = this._app.listen(port, cb);
   }

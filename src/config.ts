@@ -2,13 +2,13 @@ import path from 'path';
 import Config from './utils/@types/interfaces/config.interface';
 
 const config: Config = {
-  port: 3000,
+  port: Number(process.env.PORT) || 8080,
   shutdownTimeoutInSeconds: 3,
   baseUrl: '/api',
-  dbUri: 'mongodb://localhost:27017/7zip-online',
+  dbUri: process.env.DB_URI || 'mongodb://localhost:27017/7zip-online',
   auth: {
-    accessSecret: 'access-key',
-    refreshSecret: 'refresh-key',
+    accessSecret: process.env.JWT_ACCESS_SECRET || 'access-key',
+    refreshSecret: process.env.JWT_REFRESH_SECRET || 'refresh-key',
     accessTokenTtlInSeconds: 30 * 60,
     refreshTokenTtlInSeconds: 30 * 24 * 60 * 60
   },
@@ -26,15 +26,11 @@ const config: Config = {
   },
   morganFormat: 'dev',
   urlencodedMiddlewareOptions: {
-    extended: false,
-    limit: '2gb'
-  },
-  jsonMiddlewareOptions: {
-    limit: '2gb'
+    extended: false
   },
   corsOptions: {
     credentials: true,
-    origin: 'http://localhost:8080'
+    origin: 'http://localhost:3000'
   }
 };
 

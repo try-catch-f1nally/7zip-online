@@ -14,7 +14,7 @@ export default class MongoDB implements Database {
 
   async connect() {
     this._logger.info('Connecting to DB...');
-    await mongoose.connect(process.env.DB_URL || this._config.dbUri);
+    await mongoose.connect(this._config.dbUri);
     this._logger.info('Successfully connected to MongoDB');
   }
 
