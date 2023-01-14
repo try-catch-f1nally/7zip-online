@@ -10,10 +10,10 @@ export default class DefaultHandler implements MiddlewareService {
   }
 
   get middleware() {
-    return this._errorMiddleware.bind(this);
+    return this._defaultHandler.bind(this);
   }
 
-  private _errorMiddleware(req: Request, res: Response) {
+  private _defaultHandler(req: Request, res: Response) {
     res.status(404).json({status: 404, message: this._config.notFoundErrorHttpMessage});
   }
 }
